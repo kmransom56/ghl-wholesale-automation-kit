@@ -1,0 +1,77 @@
+{
+  "system": {
+    "name": "GHL Wholesale Automation Kit",
+    "version": "1.1.0",
+    "environment": "production",
+    "timezone": "America/New_York",
+    "status": "active"
+  },
+  "integrations": {
+    "dealdriven": {
+      "enabled": true,
+      "mode": "playwright_scraper",
+      "endpoint": "https://app.dealdriven.com",
+      "dataTypes": ["investors", "properties"],
+      "syncInterval": "daily",
+      "time": "05:00"
+    },
+    "gohighlevel": {
+      "enabled": true,
+      "endpoint": "https://services.leadconnectorhq.com",
+      "customFields": [
+        "Investor_Quality_Score",
+        "Investor_Tier",
+        "Property_Match_Score"
+      ],
+      "botMessaging": true,
+      "webhooks": {
+        "calculate_score": "/api/webhooks/calculate-score",
+        "seventy_percent_rule": "/api/webhooks/seventy-percent-rule",
+        "find_matches": "/api/webhooks/find-matches",
+        "update_investor_stats": "/api/webhooks/update-investor-stats"
+      }
+    },
+    "googleSheets": {
+      "enabled": false,
+      "spreadsheetName": "WHOLESALE_AUTOMATION_MASTER",
+      "sheets": [
+        "RAW_INVESTOR_DATA",
+        "INVESTOR_PROFILES",
+        "PROPERTY_QUEUE",
+        "DEALS_CLOSED",
+        "ANALYTICS_DASHBOARD"
+      ]
+    },
+    "gsccca": {
+      "enabled": true,
+      "endpoint": "https://www.gsccca.org",
+      "mode": "playwright_scraper"
+    }
+  },
+  "investors": {
+    "minQualityScore": 70,
+    "tierThresholds": {
+      "Gold": 80,
+      "Silver": 60,
+      "Bronze": 0
+    },
+    "batchSize": 50,
+    "processInterval": "daily"
+  },
+  "properties": {
+    "minMatchScore": 75,
+    "matchingAlgorithm": "weighted_scoring",
+    "propertyTypes": ["Single Family", "Duplex", "Multi-Family"],
+    "seventyPercentRule": 0.7
+  },
+  "outreach": {
+    "channels": ["sms", "email", "bot_message"],
+    "personalization": true,
+    "frequencyCap": "3_per_week"
+  },
+  "security": {
+    "apiKeyStorage": "environment_variables",
+    "dataRetention": "24_months",
+    "auditLogging": true
+  }
+}
